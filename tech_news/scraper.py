@@ -1,6 +1,7 @@
 import time
 import requests
 from bs4 import BeautifulSoup as bs
+import re
 
 
 def fetch(url):
@@ -36,7 +37,6 @@ def scrape_updates(html_data):
     return urls
 
 
-# Requisito 3
 def scrape_next_page_link(html_data):
     soup = bs(html_data, "html.parser")
     next_link = soup.find("a", {"class": "next page-numbers"})
@@ -47,9 +47,35 @@ def scrape_next_page_link(html_data):
     return next_link["href"]
 
 
-# Requisito 4
-def scrape_news(html_content):
-    """Seu código deve vir aqui"""
+def scrape_news(html_data):
+    soup = bs(html_data, "html.parser")
+    url = soup.find("div", {"class": "pk-share-buttons-wrap"})[
+        "data-share-url"
+    ]
+    title = (soup.find("h1", {"class": "entry-title"}).text).strip()
+    timestamp = soup.find("li", {"class": "meta-date"}).text
+    writer = soup.find("span", {"class": "author"}).text
+    reading_time = int(re.sub(
+        "\D",
+        "",
+        soup.find("li", {"class": "meta-reading-time"}).text)
+    )
+    summary = (soup.find("div", {"class": "entry-content"}).p.text).strip()
+    category = (
+        soup.find("a", {"class": "category-style"})
+        .find("span", {"class": "label"})
+        .text
+    )
+
+    return dict(
+        title=title,
+        url=url,
+        writer=writer,
+        timestamp=timestamp,
+        reading_time=reading_time,
+        summary=summary,
+        category=category,
+    )
 
 
 # Requisito 5
