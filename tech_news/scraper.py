@@ -1,6 +1,7 @@
+from bs4 import BeautifulSoup as bs
+from .database import create_news
 import time
 import requests
-from bs4 import BeautifulSoup as bs
 import re
 
 
@@ -78,6 +79,34 @@ def scrape_news(html_data):
     )
 
 
-# Requisito 5
+def get_range(amount, counter, news_qty):
+    sum = counter + news_qty
+
+    if sum > amount:
+        range = news_qty - (sum - amount)
+        return range
+
+    return news_qty
+
+
 def get_tech_news(amount):
-    """Seu código deve vir aqui"""
+    url = "https://blog.betrybe.com/"
+    news_list = list()
+    counter = 0
+
+    while counter < amount:
+        html_data = fetch(url)
+        news_urls = scrape_updates(html_data)
+        range = get_range(amount, counter, len(news_urls))
+
+        for url in news_urls[:(range)]:
+            news_page_html_content = fetch(url)
+            news_list.append(scrape_news(news_page_html_content))
+
+        counter += range
+        url = scrape_next_page_link(html_data)
+        if not url:
+            break
+
+    create_news(news_list)
+    return news_list
