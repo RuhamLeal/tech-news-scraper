@@ -23,7 +23,7 @@ def format_date(date):
             raise Exception
 
     except (Exception):
-        raise ValueError("Data com formato inválido")
+        raise ValueError("Data inválida")
 
 
 def search_by_date(date):
