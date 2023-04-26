@@ -1,6 +1,14 @@
-# Requisito 7
-def search_by_title(title):
-    """Seu código deve vir aqui"""
+from ..database import search_news
+
+
+def search_by_title(title: str):
+    news_list = list()
+    query = {"title": {"$regex": title.lower()}}
+
+    for news in search_news(query):
+        news_list.append((news["title"], news["url"]))
+
+    return news_list
 
 
 # Requisito 8
