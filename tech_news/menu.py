@@ -1,21 +1,56 @@
+from .analyzer.search_engine import (
+    search_by_title,
+    search_by_date,
+    search_by_category,
+)
+from .analyzer.ratings import top_5_categories
+from .scraper import get_tech_news
 import sys
 
 
-def get_second_step_options(first_step_option):
-    second_step_options = {
-        0: "Digite quantas notícias serão buscadas:",
-        1: "Digite o título:",
-        2: "Digite a data no formato aaaa-mm-dd:",
-        3: "Digite a categoria:",
-        4: "Listando top 5 categorias...",
-        5: "Saindo...",
+def get_tech_news_init():
+    amount = int(input("Digite quantas notícias serão buscadas: "))
+    get_tech_news(amount)
+
+
+def search_by_title_init():
+    title = str(input("Digite o título: "))
+    return search_by_title(title)
+
+
+def search_by_date_init():
+    date = str(input("Digite a data no formato aaaa-mm-dd: "))
+    return search_by_date(date)
+
+
+def search_by_category_init():
+    category = str(input("Digite a categoria: "))
+    return search_by_category(category)
+
+
+def get_top_5_categories_init():
+    return top_5_categories()
+
+
+def exit():
+    return "Encerrando script"
+
+
+def get_options(current_option):
+    options = {
+        0: get_tech_news_init,
+        1: search_by_title_init,
+        2: search_by_date_init,
+        3: search_by_category_init,
+        4: get_top_5_categories_init,
+        5: exit,
     }
 
-    if first_step_option not in second_step_options:
+    if current_option not in options:
         raise KeyError()
 
     else:
-        print(second_step_options[first_step_option])
+        print(options[current_option]())
 
 
 def analyzer_menu():
@@ -28,7 +63,7 @@ def analyzer_menu():
 
     try:
         current_option = int(input())
-        get_second_step_options(current_option)
+        get_options(current_option)
 
     except (ValueError, KeyError):
-        sys.stderr.write("Opção inválida")
+        sys.stderr.write("Opção inválida\n")
