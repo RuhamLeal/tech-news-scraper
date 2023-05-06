@@ -29,7 +29,7 @@ Tech News is a Python-based data scraping project that uses Beautiful Soup to pe
 - PYTEST
 - BEAUTIFUL SOUP
 - FLAKE
-
+</details>
 <br/>
 
 ## Features
