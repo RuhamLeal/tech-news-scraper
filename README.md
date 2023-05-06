@@ -77,7 +77,7 @@ source .venv/bin/activate
 5. Install dependencies in the virtual environment.
 
 ```
-dpython3 -m pip install -r dev-requirements.txt
+python3 -m pip install -r dev-requirements.txt
 ```
 
 6. If you don't have MongoDB installed locally, launch it via Docker.
